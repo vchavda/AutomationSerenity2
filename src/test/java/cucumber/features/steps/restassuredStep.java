@@ -1,13 +1,24 @@
 package cucumber.features.steps;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.restassured.RestAssured;
+import net.thucydides.core.webdriver.WebdriverProxyFactory;
+import org.junit.Rule;
+import org.junit.Test;
 import restAssured.RestAssuredUtils;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +30,14 @@ public class restassuredStep {
 
 	RestAssuredUtils ra = new RestAssuredUtils();
 	JsonUtils ju = new JsonUtils();
-	
-	
+
+
+	@Given("^I am connected to the database$")
+	public void connectToDB() throws SQLException {
+		//Connection con = DriverManager.getConnection("IBM515-PC0EUKMW\\SQLEXPRESS","","");
+		//Statement st = con.createStatement();
+	}
+
 	@Given("^I submit dynamic query parameters$")
 	public void whenISubmitDynamicParameters(DataTable dt){
 		ParamsBuilder.clear();
@@ -56,6 +73,10 @@ public class restassuredStep {
 		assertTrue(ju.isValueInResponse(node, value));
 		
 	}
-	
-	
+
+
+
+
+
+
 }

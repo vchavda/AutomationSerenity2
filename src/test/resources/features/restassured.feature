@@ -1,5 +1,8 @@
 Feature: Testing different features 
 
+Background:
+	Given I am connected to the database
+
 @vijay 
 Scenario: Check the API call returns 200 
 	When user makes an API call then they get a valid status code back 
@@ -17,3 +20,6 @@ Scenario Outline: response code is validated when an API call is made
 	Examples: 
 		|	value		| node 		| nodevalue 	|
 		|	200			| name		| [Churchgate]	|
+
+
+

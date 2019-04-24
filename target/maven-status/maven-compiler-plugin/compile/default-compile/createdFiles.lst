@@ -1,5 +1,0 @@
-restAssured\RestAssuredUtils.class
-Utilities\JsonUtils.class
-Utilities\ResponseMap.class
-Utilities\ParamsBuilder.class
-restAssured\ReusableSpecifications.class
