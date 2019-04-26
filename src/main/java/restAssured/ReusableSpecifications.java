@@ -2,6 +2,7 @@ package restAssured;
 
 import java.util.concurrent.TimeUnit;
 
+import Utilities.HeaderBuilder;
 import Utilities.ParamsBuilder;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -19,6 +20,7 @@ public class ReusableSpecifications {
 		rspec.setContentType(ContentType.JSON);
 		ParamsBuilder.iterateMap();
 		rspec.addParams(ParamsBuilder.getParam());
+		rspec.addHeaders(HeaderBuilder.headerBuilder);
 		requestSpecBuilder = rspec.build();
 		return requestSpecBuilder;
 	}

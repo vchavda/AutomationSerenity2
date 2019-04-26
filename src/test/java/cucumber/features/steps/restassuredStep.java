@@ -1,7 +1,9 @@
 package cucumber.features.steps;
 
+import Utilities.HeaderBuilder;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import cucumber.api.DataTable;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -56,15 +58,14 @@ public class restassuredStep {
 	@When("^I submit an API call$")
 	public void query()
 	{
-		assert(true);
+		ra.makeAPICall();
 	}
 	
 	@Then("^I should get a valid response of: '(.*)'$")
 	public void ThenIShouldGetAValidResponse(String val)
 	{
-		System.out.println("Request is: " + val);
-		ra.makeAPICall();
-		ju.isValueInResponse("name", "value");
+
+		//ju.isValueInResponse("name", "value");
 		assertEquals(Integer.toString(ResponseMap.getStatusCode()), val);
 	}
 	
@@ -75,8 +76,11 @@ public class restassuredStep {
 	}
 
 
-
-
-
+	@Given("^I submit dynamic headers$")
+	public void iSubmitDynamicHeaders(DataTable dt)  {
+		HeaderBuilder.clear();
+		List<Map<String, String>> list = dt.asMaps(String.class, String.class);
+		list.forEach((p) -> HeaderBuilder.addHeader(p.get("headerType"), p.get("headerValue")));
+	}
 
 }

@@ -12,18 +12,20 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static net.serenitybdd.rest.SerenityRest.given;
+
 public class RestAssuredUtils {
 
 
 	
 	public void makeAPICall()
 	{
-		RestAssured.baseURI = "https://maps.googleapis.com";
-		Response response = 
-		RestAssured.given(ReusableSpecifications.getGenericRequestSpec()).
+		RestAssured.baseURI = "https://community-open-weather-map.p.rapidapi.com";
+		Response response = SerenityRest.
+		given(ReusableSpecifications.getGenericRequestSpec()).
 		 expect().spec(ReusableSpecifications.getGenericResponseSpec()).
 		   when().
-		   get("/maps/api/place/textsearch/json").
+		   get("/forecast").
            //get("/maps/api/place/textsearch/json?query=Churchgate&key=AIzaSyBrhdZP1wWpMXVEvzpY4-3W-FKieCYhVXg").
         then().
            extract().response();

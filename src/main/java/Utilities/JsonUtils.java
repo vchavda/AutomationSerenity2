@@ -26,7 +26,8 @@ public class JsonUtils {
 		System.out.println(Arrays.toString(nodeValues.toArray()));
 		
 		System.out.println("Value : " + value  + "  Node Value: " + Arrays.toString(nodeValues.toArray()));
-		return value.equals(Arrays.toString(nodeValues.toArray()));
+		//return value.equals(Arrays.toString(nodeValues.toArray()));
+		return nodeValues.contains(value);
 		
 	}
 
