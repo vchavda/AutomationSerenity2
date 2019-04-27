@@ -1,37 +1,35 @@
 package cucumber.features.steps;
 
 import Utilities.HeaderBuilder;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import config.Appconfig;
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import io.restassured.RestAssured;
-import net.thucydides.core.webdriver.WebdriverProxyFactory;
-import org.junit.Rule;
-import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import restAssured.RestAssuredUtils;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-import Utilities.JsonUtils;
+import utils.JsonUtils;
 import Utilities.ParamsBuilder;
 import Utilities.ResponseMap;
 
+
+@ContextConfiguration(classes = {Appconfig.class})
 public class restassuredStep {
 
 	RestAssuredUtils ra = new RestAssuredUtils();
-	JsonUtils ju = new JsonUtils();
+	//JsonUtils ju = new JsonUtils();
+
+	@Autowired
+	private JsonUtils ju;
 
 
 	@Given("^I am connected to the database$")

@@ -1,4 +1,5 @@
 package cucumber;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.runner.RunWith;
 
 import cucumber.api.CucumberOptions;
