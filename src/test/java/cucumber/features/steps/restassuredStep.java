@@ -3,12 +3,13 @@ package cucumber.features.steps;
 import Utilities.HeaderBuilder;
 import config.Appconfig;
 import cucumber.api.DataTable;
+import cucumber.api.java.cs.A;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import restAssured.RestAssuredUtils;
+import restAssuredUtils.RestAssuredUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,17 +20,23 @@ import java.util.Map;
 
 import utils.JsonUtils;
 import Utilities.ParamsBuilder;
-import Utilities.ResponseMap;
+import restAssuredUtils.ResponseMap;
 
 
 @ContextConfiguration(classes = {Appconfig.class})
 public class restassuredStep {
 
-	RestAssuredUtils ra = new RestAssuredUtils();
+	//RestAssuredUtils ra = new RestAssuredUtils();
 	//JsonUtils ju = new JsonUtils();
 
 	@Autowired
-	private JsonUtils ju;
+	RestAssuredUtils ra;
+
+	@Autowired
+	JsonUtils ju;
+
+	@Autowired
+	ResponseMap responseMap;
 
 
 	@Given("^I am connected to the database$")
@@ -64,7 +71,8 @@ public class restassuredStep {
 	{
 
 		//ju.isValueInResponse("name", "value");
-		assertEquals(Integer.toString(ResponseMap.getStatusCode()), val);
+		System.out.println("<<< responseMap.getStatusCode" + responseMap.getStatusCode());
+		assertEquals(Integer.toString(responseMap.getStatusCode()), val);
 	}
 	
 	@Then("^the response should contain this '(.*)' and '(.*)'$")
