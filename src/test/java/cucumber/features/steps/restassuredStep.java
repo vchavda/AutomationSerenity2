@@ -3,6 +3,7 @@ package cucumber.features.steps;
 import Utilities.HeaderBuilder;
 import config.Appconfig;
 import cucumber.api.DataTable;
+import cucumber.api.PendingException;
 import cucumber.api.java.cs.A;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -14,6 +15,7 @@ import restAssuredUtils.RestAssuredUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +27,6 @@ import restAssuredUtils.ResponseMap;
 
 @ContextConfiguration(classes = {Appconfig.class})
 public class restassuredStep {
-
-	//RestAssuredUtils ra = new RestAssuredUtils();
-	//JsonUtils ju = new JsonUtils();
 
 	@Autowired
 	RestAssuredUtils ra;
@@ -63,7 +62,7 @@ public class restassuredStep {
 	@When("^I submit an API call$")
 	public void query()
 	{
-		ra.makeAPICall();
+		ra.makeAPICall("");
 	}
 	
 	@Then("^I should get a valid response of: '(.*)'$")
@@ -76,7 +75,7 @@ public class restassuredStep {
 	}
 	
 	@Then("^the response should contain this '(.*)' and '(.*)'$")
-	public void ThenTheResponseShouldContainThisNodeAndValue(String node, String value){
+	public void ThenTheResponseShouldContainThisNodeAndValue(String node, String value){ ;
 		assertTrue(ju.isValueInResponse(node, value));
 		
 	}
@@ -89,4 +88,13 @@ public class restassuredStep {
 		list.forEach((p) -> HeaderBuilder.addHeader(p.get("headerType"), p.get("headerValue")));
 	}
 
+	@When("^I submit an API call with this path '(.*)'$")
+	public void iSubmitAnAPICallWithThisPathForecast(String path) {
+		ra.makeAPICall(path);
+	}
+
+	@When("^I submit a static API Call$")
+	public void iSubmitAStaticAPICall() throws IOException {
+		ju.getStaticJSON("src/test/resources/sampleJSONResponse/sampleJSON.json");
+	}
 }

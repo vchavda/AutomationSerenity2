@@ -4,9 +4,6 @@ Feature: Testing different features
     Given I am connected to the database
 
   @vijay
-  Scenario: Check the API call returns 200
-    When user makes an API call then they get a valid status code back
-
   Scenario Outline: response code is validated when an API call is made
     Given I submit dynamic query parameters
       | queryParam     | queryParamValue                                    |
@@ -17,7 +14,7 @@ Feature: Testing different features
       | headerType     | headerValue                                        |
       | X-RapidAPI-Key | 939b2a40eamsh167250aef50fb89p11a291jsn1dfd0debd5d6 |
 
-    When I submit an API call
+    When I submit an API call with this path '/forecast'
     Then I should get a valid response of: '<value>'
     And  the response should contain this '<node>' and '<nodevalue>'
 
@@ -26,4 +23,7 @@ Feature: Testing different features
       | 200   | cod  | 200       |
 
 
-
+    Scenario: To make a call to static json 
+      When I submit a static API Call
+      Then I should get a valid response of: '200'
+      And  the response should contain this 'surname' and 'Bloggs'

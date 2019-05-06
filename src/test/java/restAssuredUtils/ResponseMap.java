@@ -1,17 +1,13 @@
 package restAssuredUtils;
 
-import config.Appconfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ContextConfiguration;
 
 @Component
 public class ResponseMap {
 
     private int statusCode;
     private String responseBody;
-
+    private String BaseURL;
 
     public int getStatusCode() {
         return statusCode;
@@ -35,4 +31,11 @@ public class ResponseMap {
         this.responseBody = responseBody;
     }
 
+    public String getBaseURL() {
+        return BaseURL;
+    }
+
+    public void setBaseURL(String baseURL) {
+        BaseURL = baseURL;
+    }
 }

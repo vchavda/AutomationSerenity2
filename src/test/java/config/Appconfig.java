@@ -5,8 +5,8 @@ package config;
 // This will then load the propeties from the propeties files
 // The @PostConstruct annotation tells spring this methos need invoking after beans have been initated and loaded
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -19,13 +19,21 @@ import javax.annotation.PostConstruct;
 @PropertySource(value = "classpath:application.properties")
 public class Appconfig {
 
+    @Autowired
+    private ResponseMap responseMap;
+
     @Value("${user}")
     private String user;
+
+    @Value("${baseURL}")
+    private String baseURL;
+
 
     @PostConstruct
     public void configureRestAssured() {
         System.out.println("XXXuser is " + user);
-
+        System.out.println("XXXbaseURL is " + baseURL);
+        responseMap.setBaseURL(baseURL);
     }
 
 

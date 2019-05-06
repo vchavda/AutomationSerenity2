@@ -11,22 +11,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import restAssured.ReusableSpecifications;
 
-
+//have to make this class component otherwise Responsemap will be nullwhen autowired.
 @Component
 public class RestAssuredUtils {
 
 	@Autowired
 	private ResponseMap responseMap;
 	
-	public void makeAPICall()
+	public void makeAPICall(String path)
 	{
-		RestAssured.baseURI = "https://community-open-weather-map.p.rapidapi.com";
+		RestAssured.baseURI = responseMap.getBaseURL();
 		Response response = SerenityRest.
 		given(ReusableSpecifications.getGenericRequestSpec()).
 		 expect().spec(ReusableSpecifications.getGenericResponseSpec()).
 		   when().
-		   get("/forecast").
-           //get("/maps/api/place/textsearch/json?query=Churchgate&key=AIzaSyBrhdZP1wWpMXVEvzpY4-3W-FKieCYhVXg").
+		   get(path).
         then().
            extract().response();
 		
