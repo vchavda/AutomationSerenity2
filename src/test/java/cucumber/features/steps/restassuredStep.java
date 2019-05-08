@@ -1,6 +1,11 @@
 package cucumber.features.steps;
 
 import Utilities.HeaderBuilder;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Predicate;
 import config.Appconfig;
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
@@ -12,13 +17,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import restAssuredUtils.RestAssuredUtils;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import utils.JsonUtils;
 import Utilities.ParamsBuilder;
@@ -77,6 +88,11 @@ public class restassuredStep {
 	@Then("^the response should contain this '(.*)' and '(.*)'$")
 	public void ThenTheResponseShouldContainThisNodeAndValue(String node, String value){ ;
 		assertTrue(ju.isValueInResponse(node, value));
+
+		// another way is to use JSON path like this.
+		String val = JsonPath.read(responseMap.getResponseBody(),"$." + node, new Predicate[0]).toString();
+		System.out.println("XXVAL = " + val);
+		assertEquals(val, value);
 		
 	}
 
@@ -96,5 +112,26 @@ public class restassuredStep {
 	@When("^I submit a static API Call$")
 	public void iSubmitAStaticAPICall() throws IOException {
 		ju.getStaticJSON("src/test/resources/sampleJSONResponse/sampleJSON.json");
+	}
+
+	@When("^I submit a wiremock API call$")
+	public void iSubmitAWiremockAPICall() throws Throwable {
+		System.out.println("HERE 1");
+		WireMockServer wireMockServer = new WireMockServer();
+		wireMockServer.start();
+		wireMockServer.resetAll();
+
+		System.out.println("HERE 2");
+
+		stubFor(WireMock.get(urlMatching("/myapirequest"))
+				.willReturn(aResponse()
+						.withHeader("Content-Type", "application/json")
+						.withBody(loadResponseFromFile("src/test/resources/sampleJSONResponse/sampleJSON.json"))));
+
+	}
+
+	private String loadResponseFromFile(String classpathLocation) {
+		InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(classpathLocation);
+		return (new Scanner(resourceAsStream,"utf-8")).useDelimiter("\\Z").next();
 	}
 }

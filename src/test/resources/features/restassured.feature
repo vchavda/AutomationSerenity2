@@ -23,7 +23,11 @@ Feature: Testing different features
       | 200   | cod  | 200       |
 
 
-    Scenario: To make a call to static json 
+    Scenario: To make a call to static json
       When I submit a static API Call
       Then I should get a valid response of: '200'
       And  the response should contain this 'surname' and 'Bloggs'
+
+
+      #Scenario: To make a wiremock call
+       #\\\\ When I submit a wiremock API call
